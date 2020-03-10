@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Василиса Варич](https://up.htmlacademy.ru/nodejs/3/user/503705).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Теплов](https://htmlacademy.ru/profile/id1031027).
 
 ---
 
