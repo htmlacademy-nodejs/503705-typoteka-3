@@ -5,6 +5,8 @@ const {Cli} = require(`./cli`);
 const {
   USER_ARGV_INDEX,
   DEFAULT_COMMAND,
+  COUNT_ERROR_MESSAGE,
+  MAX_COUNT_OF_POSTS,
   ExitCode,
 } = require(`../constants.js`);
 
@@ -16,4 +18,13 @@ if (userArguments.length === 0 || !Cli[userCommand]) {
   process.exit(ExitCode.success);
 }
 
-Cli[userCommand].run(userArguments.slice(1));
+if (userArguments.slice(1)) {
+  const [userPostsCount] = userArguments.slice(1);
+
+  if (Number.parseInt(userPostsCount, 10) > MAX_COUNT_OF_POSTS) {
+    console.error(COUNT_ERROR_MESSAGE);
+    process.exit(ExitCode.error);
+  }
+
+  Cli[userCommand].run(userPostsCount);
+}
