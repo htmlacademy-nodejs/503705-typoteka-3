@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {
   getRandomInt,
@@ -93,7 +93,7 @@ const generatePosts = (amount) => (
 
 module.exports = {
   name: `--generate`,
-  run(userCountOfPosts) {
+  async run(userCountOfPosts) {
     let count = userCountOfPosts;
     if (!count) {
       count = DEFAULT_COUNT;
@@ -107,11 +107,11 @@ module.exports = {
     count = Number.parseInt(userCountOfPosts, 10) || DEFAULT_COUNT;
     const fileContent = JSON.stringify(generatePosts(count));
 
-    fs.writeFile(FILE_NAME, fileContent, (err) => {
-      if (err) {
-        return console.error(chalk.red(FILE_ERR_MESSAGE));
-      }
-      return console.log(chalk.green(FILE_SUCCESS_MESSAGE));
-    });
+    try {
+      await fs.writeFile(FILE_NAME, fileContent);
+      console.log(chalk.green(FILE_SUCCESS_MESSAGE));
+    } catch (err) {
+      console.error(chalk.red(FILE_ERR_MESSAGE));
+    }
   },
 };
