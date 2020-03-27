@@ -5,6 +5,11 @@ const {
   getRandomInt,
   getRandomArr,
 } = require(`../../utils.js`);
+const {
+  MAX_COUNT_OF_POSTS,
+  COUNT_ERROR_MESSAGE,
+  ExitCode,
+} = require(`../../constants.js`);
 
 const FILE_NAME = `mock.json`;
 const FILE_ERR_MESSAGE = `Can't write data to file...`;
@@ -92,6 +97,12 @@ module.exports = {
     if (!count) {
       count = DEFAULT_COUNT;
     }
+
+    if (Number.parseInt(count, 10) > MAX_COUNT_OF_POSTS) {
+      console.error(COUNT_ERROR_MESSAGE);
+      process.exit(ExitCode.error);
+    }
+
     count = Number.parseInt(userCountOfPosts, 10) || DEFAULT_COUNT;
     const fileContent = JSON.stringify(generatePosts(count));
 
