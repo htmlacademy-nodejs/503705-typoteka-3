@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require(`fs`);
+const chalk = require(`chalk`);
 const {
   getRandomInt,
   getRandomArr,
@@ -99,7 +100,7 @@ module.exports = {
     }
 
     if (Number.parseInt(count, 10) > MAX_COUNT_OF_POSTS) {
-      console.error(COUNT_ERROR_MESSAGE);
+      console.error(chalk.red(COUNT_ERROR_MESSAGE));
       process.exit(ExitCode.error);
     }
 
@@ -108,9 +109,9 @@ module.exports = {
 
     fs.writeFile(FILE_NAME, fileContent, (err) => {
       if (err) {
-        return console.error(FILE_ERR_MESSAGE);
+        return console.error(chalk.red(FILE_ERR_MESSAGE));
       }
-      return console.log(FILE_SUCCESS_MESSAGE);
+      return console.log(chalk.green(FILE_SUCCESS_MESSAGE));
     });
   },
 };
