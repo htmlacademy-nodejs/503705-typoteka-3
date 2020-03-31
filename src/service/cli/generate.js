@@ -1,10 +1,16 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
 const {
   getRandomInt,
   getRandomArr,
 } = require(`../../utils.js`);
+const {
+  MAX_COUNT_OF_POSTS,
+  COUNT_ERROR_MESSAGE,
+  ExitCode,
+} = require(`../../constants.js`);
 
 const FILE_NAME = `mock.json`;
 const FILE_ERR_MESSAGE = `Can't write data to file...`;
@@ -87,19 +93,25 @@ const generatePosts = (amount) => (
 
 module.exports = {
   name: `--generate`,
-  run(userCountOfPosts) {
+  async run(userCountOfPosts) {
     let count = userCountOfPosts;
     if (!count) {
       count = DEFAULT_COUNT;
     }
+
+    if (Number.parseInt(count, 10) > MAX_COUNT_OF_POSTS) {
+      console.error(chalk.red(COUNT_ERROR_MESSAGE));
+      process.exit(ExitCode.error);
+    }
+
     count = Number.parseInt(userCountOfPosts, 10) || DEFAULT_COUNT;
     const fileContent = JSON.stringify(generatePosts(count));
 
-    fs.writeFile(FILE_NAME, fileContent, (err) => {
-      if (err) {
-        return console.error(FILE_ERR_MESSAGE);
-      }
-      return console.log(FILE_SUCCESS_MESSAGE);
-    });
+    try {
+      await fs.writeFile(FILE_NAME, fileContent);
+      console.log(chalk.green(FILE_SUCCESS_MESSAGE));
+    } catch (err) {
+      console.error(chalk.red(FILE_ERR_MESSAGE));
+    }
   },
 };
