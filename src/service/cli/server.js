@@ -25,7 +25,7 @@ app.get(`/posts`, async (req, res) => {
   }
 });
 
-app.use((req, res) => res.status(HttpCode.NOT_FOUND).send(`Not`))
+app.use((req, res) => res.status(HttpCode.NOT_FOUND).send(`Page not found`));
 
 module.exports = {
   name: `--server`,
